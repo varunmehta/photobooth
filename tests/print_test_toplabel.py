@@ -41,28 +41,33 @@ replay_cycles = 4 # how many times to show each photo on-screen after taking
 #################
 
 def print_pics(now):  
-	#copy pics
-	#gm convert -size 120x120 cockatoo.jpg -resize 120x120 +profile "*" thumbnail.jpg
-	graphicsmagick = "gm convert -size 968x648 " + file_path + now + "*.jpg " + file_path + "bak/" + now + "_sm*.jpg" 
-	print "Copying pics with command: " + graphicsmagick
-	os.system(graphicsmagick) #make the thumbnails
+	copypics = "cp " +file_path + now + "*.jpg "+ file_path+"PB_archive/"
+	print copypics
+	os.system(copypics)
 	#resizing + montaging
 	print "Resizing Pics..."
 	#convert -resize 968x648 /home/pi/photobooth/pics/*.jpg /home/pi/photobooth/pics_tmp/*_tmp.jpg
-	graphicsmagick = "gm mogrify -resize 968x648 " + file_path + now + "_sm*.jpg" 
+	graphicsmagick = "gm mogrify -resize 968x648 " + file_path + now + "*.jpg" 
 	print "Resizing with command: " + graphicsmagick
 	os.system(graphicsmagick) #make the thumbnails
 
 	print "Montaging Pics..."
 	#montage /home/pi/photobooth/pics/*.jpg -tile 2x2 -geometry +10+10 /home/pi/temp_montage2.jpg
-	graphicsmagick = "gm montage " + file_path + now + "*.jpg -tile 2x2 -geometry +10+10 " + file_path + now + "_picmontage.jpg" 
+	graphicsmagick = "gm montage " + file_path + now + "*.jpg -tile 2x2 -geometry 968x648+10+10 " + file_path + now + "_picmontage.jpg" 
 	print "Montaging images with command: " + graphicsmagick
 	os.system(graphicsmagick) 
 
 	print "Adding Label..."
 	#montage /home/pi/temp_montage2.jpg /home/pi/photobooth/photobooth_label.jpg -tile 2x1 -geometry +5+5 /home/pi/temp_montage3.jpg
-	#graphicsmagick = "gm montage " + file_path + now + "_picmontage.jpg ~/dev/Photobooth/photobooth/bn_booth_label_v.jpg -tile 2x1 -geometry +5+5 " + file_path + now + "_labeledpicmontage.jpg" 
-	graphicsmagick = "gm convert -append ~/dev/Photobooth/photobooth/bn_booth_label_v.jpg  " + file_path + now + "_picmontage.jpg " + file_path + now + "_labeledpicmontage.jpg" 
+	#graphicsmagick = "gm montage " + file_path + now + "_picmontage.jpg ~/dev/Photobooth/photobooth/bn_booth_label_h.jpg -tile 1x2 -geometry +5+5 -gravity North " + file_path + now + "_labeledpicmontage.jpg" 
+	#graphicsmagick = "gm convert -append ~/dev/Photobooth/photobooth/bn_booth_label_h.jpg  " + file_path + now + "_picmontage.jpg " + file_path + now + "graphicsmagick = ".jpg" 
+	graphicsmagick = "gm convert \
+    -page +0+0      "+ file_path + now + "-01.jpg \
+    -page +978+0    "+ file_path + now + "-02.jpg \
+    -page +0+978    "+ file_path + now + "-03.jpg \
+    -page +978+978  "+ file_path + now + "-04.jpg \
+    -page +1090+1360  ~/dev/Photobooth/photobooth/bn_booth_label_h.jpg \
+    -mosaic " + file_path + now + "_picmontage.jpg"
 	print "Adding label with command: " + graphicsmagick 
 	os.system(graphicsmagick) 
 
@@ -83,7 +88,7 @@ def start_photobooth():
 	#Static Pics
 	print "Finding pics" 
 	#now = time.strftime("%Y%m%d%H%M%S") #get the current date and time for the start of the filename
-	now = "20150324002139"
+	now = "20150324002130"
 	# print "Trying to find the start images: " + file_path + "*.jpg"
 	# os.rename(file_path + "*.jpg", file_path + now + "*.jpg")
 
@@ -93,7 +98,6 @@ def start_photobooth():
 
 	########################### Begin Step 4 #################################
 	print "Done"
-	print
 	print
 
 # ####################
