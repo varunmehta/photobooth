@@ -67,7 +67,7 @@ def print_pics(now):
     -page +0+978    "+ file_path + now + "-03.jpg \
     -page +978+978  "+ file_path + now + "-04.jpg \
     -page +1090+1360  ~/dev/Photobooth/photobooth/bn_booth_label_h.jpg \
-    -mosaic " + file_path + now + "_picmontage.jpg"
+    -mosaic " + file_path + now + "_picmontage_labeled.jpg"
 	print "Adding label with command: " + graphicsmagick 
 	os.system(graphicsmagick) 
 
