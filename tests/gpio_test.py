@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO #using physical pin numbering change in future?
 from time import sleep
 import atexit
 
@@ -10,8 +10,8 @@ led2_pin = 19 # LED 2 #19
 led3_pin = 21 # LED 3 #21
 led4_pin = 23 # LED 4 #23
 button1_pin = 22 # pin for the big red button
-button2_pin = 2 # pin for button to shutdown the pi #18
-button3_pin = 17 # pin for button to end the program, but not shutdown the pi
+button2_pin = 15 # pin for button to shutdown the pi #18
+button3_pin = 11 # pin for button to end the program, but not shutdown the pi
 
 #GPIO setup
 GPIO.setmode(GPIO.BOARD)

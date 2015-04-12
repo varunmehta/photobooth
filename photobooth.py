@@ -8,7 +8,7 @@ import glob
 import time
 import traceback
 from time import sleep
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO #using physical pin numbering change in future?
 import picamera # http://picamera.readthedocs.org/en/release-1.4/install2.html
 import atexit
 import sys
