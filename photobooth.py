@@ -26,8 +26,8 @@ led2_pin = 19 # LED 2 #19
 led3_pin = 21 # LED 3 #21
 led4_pin = 23 # LED 4 #23
 button1_pin = 22 # pin for the big red button
-button2_pin = 11 # pin for button to shutdown the pi #18
-button3_pin = 15 # pin for button to end the program, but not shutdown the pi
+button2_pin = 15 # pin for button to shutdown the pi #18
+button3_pin = 11 # pin for button to end the program, but not shutdown the pi
 
 post_online = 1 # default 1. Change to 0 if you don't want to upload pics.
 total_pics = 4 # number of pics to be taken
@@ -214,7 +214,7 @@ def start_photobooth():
 		camera.close()
 	########################### Begin Step 3 #################################
 	#printing pics
-	print_pics(now)
+	#print_pics(now)
 
 	print "Creating an animated gif" 
 	if post_online:
