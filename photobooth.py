@@ -15,6 +15,7 @@ import sys
 import socket
 import pygame
 import pytumblr # https://github.com/tumblr/pytumblr
+from twython import Twython
 import config
 from signal import alarm, signal, SIGALRM, SIGKILL
 
@@ -50,11 +51,20 @@ real_path = os.path.dirname(os.path.realpath(__file__))
 
 # Setup the tumblr OAuth Client
 client = pytumblr.TumblrRestClient(
-    config.consumer_key,
-    config.consumer_secret,
-    config.oath_token,
-    config.oath_secret,
+    config.tumblr_consumer_key,
+    config.tumblr_consumer_secret,
+    config.tumblr_oath_token,
+    config.tumblr_oath_secret,
 );
+
+#setup the twitter api client
+twitter_api = Twython(
+	config.twitter_CONSUMER_KEY,
+	config.twitter_CONSUMER_SECRET,
+	config.twitter_ACCESS_KEY,
+	config.twitter_ACCESS_SECRET,
+); 
+
 
 ####################
 ### Other Config ###
@@ -142,15 +152,36 @@ def show_image(image_path):
     pygame.display.flip()
 
 def print_pics(jpg_group):  
+	#moving original pics to backup
+	# copypics = "cp " +file_path + now + "*.jpg "+ file_path+"PB_archive/"
+	# print copypics
+	# os.system(copypics)
+
 	#resizing + montaging
-	print "Resizing Pics"
-	#mogrify -resize 968x648 /home/pi/photobooth/pics/*.jpg
+	print "Resizing Pics..." #necessary?
 	#convert -resize 968x648 /home/pi/photobooth/pics/*.jpg /home/pi/photobooth/pics_tmp/*_tmp.jpg
-	graphicsmagick = "gm convert -resize 968x648" + file_path + now + "*.jpg " + file_path + now + "*_tmp.jpg" 
-	print("Printing with command: " +graphicsmagick)
-	os.system(graphicsmagick) #make the thumbnails
+	graphicsmagick = "gm mogrify -resize 968x648 " + config.file_path + now + "*.jpg" 
+	#print "Resizing with command: " + graphicsmagick
+	os.system(graphicsmagick) 
+
+	print "Montaging Pics..."
+	graphicsmagick = "gm montage " + config.file_path + now + "*.jpg -tile 2x2 -geometry 1000x699+10+10 " + config.file_path + now + "_picmontage.jpg" 
+	#print "Montaging images with command: " + graphicsmagick
+	os.system(graphicsmagick) 
+
+	print "Adding Label..."
+	graphicsmagick = "gm convert -append "+real_path+ "/assets/bn_booth_label_h.jpg  " + config.file_path + now + "_picmontage.jpg " + config.file_path + now + "_print.jpg" 
+	#print "Adding label with command: " + graphicsmagick 
+	os.system(graphicsmagick) 
+
 	#printing
-	#print code
+	printcommand = "lp -d Canon_CP760 " + config.file_path + now + "_print.jpg"
+	os.system(printcommand) 
+
+def tweet_pics(jpg_group):
+	twitter_photo = open(config.file_path + now + '_print.jpg','rb')
+	twitter_api.update_status_with_media(media=twitter_photo, status='Pics from the #briannicole2015 #photobooth')
+
 
 def display_pics(jpg_group):
     # this section is an unbelievable nasty hack - for some reason Pygame
@@ -177,22 +208,22 @@ def display_pics(jpg_group):
 # define the photo taking function for when the big button is pressed 
 def start_photobooth(): 
 	################################# Begin Step 1 ################################# 
-	show_image(real_path + "/blank.png")
+	show_image(real_path + "/assets/blank.png")
 	print "Get Ready"
 	GPIO.output(led1_pin,True);
-	show_image(real_path + "/instructions.png")
+	show_image(real_path + "/assets/instructions.png")
 	sleep(prep_delay) 
 	GPIO.output(led1_pin,False)
 
-	show_image(real_path + "/blank.png")
+	show_image(real_path + "/assets/blank.png")
 	
 	camera = picamera.PiCamera()
-	pixel_width = 500 #use a smaller size to process faster, and tumblr will only take up to 500 pixels wide for animated gifs
-	pixel_height = monitor_h * pixel_width // monitor_w
+	pixel_width = 1000 #originally 500: use a smaller size to process faster, and tumblr will only take up to 500 pixels wide for animated gifs
+	#pixel_height = monitor_h * pixel_width // monitor_w #optimize for monitor size
+	pixel_height = 666
 	camera.resolution = (pixel_width, pixel_height) 
 	camera.vflip = True
 	camera.hflip = False
-	#camera.saturation = -100 # comment out this line if you want color images
 	camera.start_preview()
 	
 	sleep(2) #warm up camera
@@ -218,12 +249,12 @@ def start_photobooth():
 
 	print "Creating an animated gif" 
 	if post_online:
-		show_image(real_path + "/uploading.png")
+		show_image(real_path + "/assets/uploading.png")
 	else:
-		show_image(real_path + "/processing.png")
+		show_image(real_path + "/assets/processing.png")
 
 	GPIO.output(led3_pin,True) #turn on the LED
-	graphicsmagick = "gm convert -delay " + str(gif_delay) + " " + config.file_path + now + "*.jpg " + config.file_path + now + ".gif" 
+	graphicsmagick = "gm convert -size 500x333 -delay " + str(gif_delay) + " " + config.file_path + now + "*.jpg " + config.file_path + now + ".gif" 
 	os.system(graphicsmagick) #make the .gif
 	print "Uploading to tumblr. Please check " + config.tumblr_blog + ".tumblr.com soon."
 
@@ -255,13 +286,25 @@ def start_photobooth():
 	print "Done"
 	GPIO.output(led4_pin,False) #turn off the LED
 	
+	try:
+		print_pics(now)
+	except Exception, e:
+		tb = sys.exc_info()[2]
+		traceback.print_exception(e.__class__, e, tb)
+	
+	try:
+		tweet_pics(now)
+	except Exception, e:
+		tb = sys.exc_info()[2]
+		traceback.print_exception(e.__class__, e, tb)
+
 	if post_online:
-		show_image(real_path + "/finished.png")
+		show_image(real_path + "/assets/finished.png")
 	else:
-		show_image(real_path + "/finished2.png")
+		show_image(real_path + "/assets/finished2.png")
 	
 	time.sleep(restart_delay)
-	show_image(real_path + "/intro.png");
+	show_image(real_path + "/assets/intro.png");
 
 ####################
 ### Main Program ###
@@ -291,7 +334,7 @@ GPIO.output(led2_pin,False);
 GPIO.output(led3_pin,False);
 GPIO.output(led4_pin,False);
 
-show_image(real_path + "/intro.png");
+show_image(real_path + "/assets/intro.png");
 
 while True:
         GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
