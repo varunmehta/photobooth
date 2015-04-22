@@ -1,6 +1,7 @@
 
-vim /boot/config.txt
+#vim /boot/config.txt
 
+```
 # uncomment if you get no picture on HDMI for a default "safe" mode
 #hdmi_safe=1
 
@@ -40,3 +41,4 @@ framebuffer_height=272
 
 #uncomment to overclock the arm. 700 MHz is the default.
 #arm_freq=800
+```

@@ -1,4 +1,5 @@
-#no blanking code
+#Code that stops monitor from sleeping
+
 ```bash
 #!/bin/bash
 
