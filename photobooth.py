@@ -11,7 +11,7 @@ from time import sleep
 import RPi.GPIO as GPIO #using physical pin numbering change in future?
 import picamera # http://picamera.readthedocs.org/en/release-1.4/install2.html
 import atexit
-import sys
+import sys, getopt
 import socket
 import pygame
 import pytumblr # https://github.com/tumblr/pytumblr
@@ -285,30 +285,41 @@ def start_photobooth():
 	GPIO.output(led3_pin,False) #turn off the LED
 	
 	########################### Begin Step 4 #################################
+	printflag = False
+	tweetflag = False
 	GPIO.output(led4_pin,True) #turn on the LED
 	try:
 		display_pics(now)
 	except Exception, e:
 		tb = sys.exc_info()[2]
 		traceback.print_exception(e.__class__, e, tb)
+
+	#check for tweeting or printing
+	for s in sys.argv:
+		if (s == "p"):
+			printflag = True
+		if (s == "t"):
+			tweetflag = True
+	#PRINT MOSAIC if flag is set
+	if(printflag):
+		try:
+			print_pics(now)
+		except Exception, e:
+			tb = sys.exc_info()[2]
+			traceback.print_exception(e.__class__, e, tb)
+
+	# TWEET PICS if flag is set
+	if(tweetflag):
+		try:
+			tweet_pics(now)
+		except Exception, e:
+			tb = sys.exc_info()[2]
+			traceback.print_exception(e.__class__, e, tb)
+	
 	pygame.quit()
 	print "Done"
 	GPIO.output(led4_pin,False) #turn off the LED
 	
-	#PRINT MOSAIC
-	# try:
-	# 	print_pics(now)
-	# except Exception, e:
-	# 	tb = sys.exc_info()[2]
-	# 	traceback.print_exception(e.__class__, e, tb)
-
-	# TWEET PICS
-	try:
-		tweet_pics(now)
-	except Exception, e:
-		tb = sys.exc_info()[2]
-		traceback.print_exception(e.__class__, e, tb)
-
 	if post_online:
 		show_image(real_path + "/assets/finished.png")
 	else:
