@@ -38,9 +38,9 @@ gif_delay = 100 # How much time between frames in the animated gif
 restart_delay = 5 # how long to display finished message before beginning a new session
 
 monitor_w = 480 #800
-monitor_h = 240 #480
+monitor_h = 272 #480
 transform_x = 480 #640 # how wide to scale the jpg when replaying
-transfrom_y = 240 #480 # how high to scale the jpg when replaying
+transfrom_y = 272 #480 # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
 offset_y = 0 # how far off to left corner to display photos
 replay_delay = 1 # how much to wait in-between showing pics on-screen after taking
@@ -151,7 +151,8 @@ def show_image(image_path):
     screen.blit(img,(offset_x,offset_y))
     pygame.display.flip()
 
-def print_pics(jpg_group):  
+def create_mosaic(jpg_group): 
+	now = jpg_group 
 	#moving original pics to backup
 	# copypics = "cp " +file_path + now + "*.jpg "+ file_path+"PB_archive/"
 	# print copypics
@@ -174,11 +175,14 @@ def print_pics(jpg_group):
 	#print "Adding label with command: " + graphicsmagick 
 	os.system(graphicsmagick) 
 
+def print_pics(jpg_group): 
+	now = jpg_group
 	#printing
 	printcommand = "lp -d Canon_CP760 " + config.file_path + now + "_print.jpg"
 	os.system(printcommand) 
 
 def tweet_pics(jpg_group):
+	now = jpg_group
 	twitter_photo = open(config.file_path + now + '_print.jpg','rb')
 	twitter_api.update_status_with_media(media=twitter_photo, status='Pics from the #briannicole2015 #photobooth')
 
@@ -244,8 +248,6 @@ def start_photobooth():
 		camera.stop_preview()
 		camera.close()
 	########################### Begin Step 3 #################################
-	#printing pics
-	#print_pics(now)
 
 	print "Creating an animated gif" 
 	if post_online:
@@ -273,6 +275,13 @@ def start_photobooth():
 				except:
 					print('Something went wrong. Could not write file.')
 					sys.exit(0) # quit Python
+
+	try:
+		create_mosaic(now)
+	except Exception, e:
+		tb = sys.exc_info()[2]
+		traceback.print_exception(e.__class__, e, tb)
+
 	GPIO.output(led3_pin,False) #turn off the LED
 	
 	########################### Begin Step 4 #################################
@@ -286,12 +295,14 @@ def start_photobooth():
 	print "Done"
 	GPIO.output(led4_pin,False) #turn off the LED
 	
-	try:
-		print_pics(now)
-	except Exception, e:
-		tb = sys.exc_info()[2]
-		traceback.print_exception(e.__class__, e, tb)
-	
+	#PRINT MOSAIC
+	# try:
+	# 	print_pics(now)
+	# except Exception, e:
+	# 	tb = sys.exc_info()[2]
+	# 	traceback.print_exception(e.__class__, e, tb)
+
+	# TWEET PICS
 	try:
 		tweet_pics(now)
 	except Exception, e:
