@@ -1,4 +1,5 @@
 #no blanking code
+```bash
 #!/bin/bash
 
 NOBLANK="
@@ -69,3 +70,4 @@ NOBLANK="
   # required so xterm will not close
   printf "\n\t press any key to exit: "; read -n 1 KEYIN
   printf "\t$GREEN Program ended normaly $OFF\n\n"
+```
