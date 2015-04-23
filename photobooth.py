@@ -321,9 +321,9 @@ def start_photobooth():
 	GPIO.output(led4_pin,False) #turn off the LED
 	
 	if post_online:
-		show_image(real_path + "/assets/finished.png")
+		show_image(real_path + "/assets/finished_connected.png")
 	else:
-		show_image(real_path + "/assets/finished2.png")
+		show_image(real_path + "/assets/finished_offline.png")
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/assets/intro.png");
