@@ -265,7 +265,7 @@ def start_photobooth():
 		while connected: 
 			try:
 				file_to_upload = config.file_path + now + ".gif"
-				client.create_photo(config.tumblr_blog, state="published", tags=["nicolebrian2015","drumminhandsPhotoBooth"], data=file_to_upload)
+				client.create_photo(config.tumblr_blog, state="published", tags=["nicolebrian2015", "photobooth"], data=file_to_upload)
 				break
 			except ValueError:
 				print "Oops. No internect connection. Upload later."
@@ -276,6 +276,7 @@ def start_photobooth():
 					print('Something went wrong. Could not write file.')
 					sys.exit(0) # quit Python
 
+	#Make Mosaic
 	try:
 		create_mosaic(now)
 	except Exception, e:
@@ -321,9 +322,9 @@ def start_photobooth():
 	GPIO.output(led4_pin,False) #turn off the LED
 	
 	if post_online:
-		show_image(real_path + "/assets/finished.png")
+		show_image(real_path + "/assets/finished_connected.png")
 	else:
-		show_image(real_path + "/assets/finished2.png")
+		show_image(real_path + "/assets/finished_offline.png")
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/assets/intro.png");
