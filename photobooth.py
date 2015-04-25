@@ -368,5 +368,7 @@ show_image(real_path + "/assets/intro.png");
 
 while True:
         GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
+        GPIO.add_event_detect(button2_pin, GPIO.FALLING, callback=shut_it_down, bouncetime=300) 
+        GPIO.add_event_detect(button3_pin, GPIO.FALLING, callback=exit_photobooth, bouncetime=300)
 	time.sleep(0.2) #debounce
 	start_photobooth()
