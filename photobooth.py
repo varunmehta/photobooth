@@ -363,6 +363,6 @@ GPIO.output(led4_pin,False);
 show_image(real_path + "/assets/intro.png");
 
 while True:
-        GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
+		GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
 		time.sleep(0.2) #debounce
 		start_photobooth()
