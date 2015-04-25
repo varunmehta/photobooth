@@ -327,14 +327,6 @@ def start_photobooth():
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/assets/intro.png");
-	# when a falling edge is detected on button2_pin and button3_pin, regardless of whatever   
-	# else is happening in the program, their function will be run   
-	GPIO.add_event_detect(button2_pin, GPIO.FALLING, callback=shut_it_down, bouncetime=300) 
-
-	#choose one of the two following lines to be un-commented
-	GPIO.add_event_detect(button3_pin, GPIO.FALLING, callback=exit_photobooth, bouncetime=300) #use third button to exit python. Good while developing
-	#GPIO.add_event_detect(button3_pin, GPIO.FALLING, callback=clear_pics, bouncetime=300) #use the third button to clear pics stored on the SD card from previous events
-
 
 ####################
 ### Main Program ###
@@ -368,7 +360,5 @@ show_image(real_path + "/assets/intro.png");
 
 while True:
         GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
-        GPIO.add_event_detect(button2_pin, GPIO.FALLING, callback=shut_it_down, bouncetime=300) 
-        GPIO.add_event_detect(button3_pin, GPIO.FALLING, callback=exit_photobooth, bouncetime=300)
-	time.sleep(0.2) #debounce
-	start_photobooth()
+		time.sleep(0.2) #debounce
+		start_photobooth()
