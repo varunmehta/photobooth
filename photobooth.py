@@ -184,7 +184,7 @@ def print_pics(jpg_group):
 def tweet_pics(jpg_group):
 	now = jpg_group
 	twitter_photo = open(config.file_path + now + '_print.jpg','rb')
-	twitter_api.update_status_with_media(media=twitter_photo, status='Pics from the #briannicole2015 #photobooth')
+	twitter_api.update_status_with_media(media=twitter_photo, status='Pics from the #'+ config.event_tag +' #photobooth')
 
 
 def display_pics(jpg_group):
@@ -265,7 +265,7 @@ def start_photobooth():
 		while connected: 
 			try:
 				file_to_upload = config.file_path + now + ".gif"
-				client.create_photo(config.tumblr_blog, state="published", tags=["nicolebrian2015", "photobooth"], data=file_to_upload)
+				client.create_photo(config.tumblr_blog, state="published", tags=[config.event_tag, "photobooth"], data=file_to_upload)
 				break
 			except ValueError:
 				print "Oops. No internect connection. Upload later."
@@ -301,6 +301,7 @@ def start_photobooth():
 			printflag = True
 		if (s == "t"):
 			tweetflag = True
+
 	#PRINT MOSAIC if flag is set
 	if(printflag):
 		try:
