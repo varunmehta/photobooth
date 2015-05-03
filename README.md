@@ -16,5 +16,5 @@ This requires:
   - pytumblr -- https://github.com/tumblr/pytumblr
   - twython -- https://github.com/ryanmcgrath/twython
 
-Todo:
-[Next Steps](nextsteps.md)
+#Todo:
+ - [Next Steps](nextsteps.md)
