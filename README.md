@@ -15,3 +15,6 @@ This requires:
   - GraphicsMagick -- http://www.graphicsmagick.org/
   - pytumblr -- https://github.com/tumblr/pytumblr
   - twython -- https://github.com/ryanmcgrath/twython
+
+Todo:
+[Next Steps](nextsteps.md)
