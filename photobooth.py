@@ -381,7 +381,7 @@ time.sleep(3)
     # GPIO.output(led3_pin, False)
     # GPIO.output(led4_pin, False)
 
-    show_image(real_path + "/assets/intro.png")
+show_image(real_path + "/assets/intro.png")
 
 while True:
     # GPIO.wait_for_edge(button1_pin, GPIO.FALLING)
