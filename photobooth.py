@@ -361,7 +361,7 @@ def start_photobooth():
 
 # choose one of the two following lines to be un-commented
     # GPIO.add_event_detect(button3_pin, GPIO.FALLING, callback=exit_photobooth,
-                      bouncetime=300)  # use third button to exit python. Good while developing
+#                      bouncetime=300)  # use third button to exit python. Good while developing
 # GPIO.add_event_detect(button3_pin, GPIO.FALLING, callback=clear_pics, bouncetime=300) #use the third button to clear pics stored on the SD card from previous events
 
 # delete files in folder on startup
