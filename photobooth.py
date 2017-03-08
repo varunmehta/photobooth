@@ -6,16 +6,14 @@
 import atexit
 import glob
 import os
+import picamera  # http://picamera.readthedocs.org/en/release-1.4/install2.html
+import pygame
 import socket
 import sys
 import time
 import traceback
 from signal import alarm, signal, SIGALRM
 from time import sleep
-
-# import RPi.GPIO as GPIO  # using physical pin numbering change in future?
-import picamera  # http://picamera.readthedocs.org/en/release-1.4/install2.html
-import pygame
 
 import config
 
@@ -92,7 +90,6 @@ def cleanup():
     # GPIO.cleanup()
 
 atexit.register(cleanup)
-
 
 def shut_it_down(channel):
     print
@@ -330,12 +327,12 @@ def start_photobooth():
             traceback.print_exception(e.__class__, e, tb)
 
     # TWEET PICS if flag is set
-    if (tweetflag):
-        try:
-            tweet_pics(now)
-        except Exception, e:
-            tb = sys.exc_info()[2]
-            traceback.print_exception(e.__class__, e, tb)
+    # if (tweetflag):
+    #     try:
+    #         tweet_pics(now)
+    #     except Exception, e:
+    #         tb = sys.exc_info()[2]
+    #         traceback.print_exception(e.__class__, e, tb)
 
     pygame.quit()
     print
