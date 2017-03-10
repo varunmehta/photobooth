@@ -175,7 +175,6 @@ def display_pics(jpg_group):
             show_image(config.file_path + jpg_group + "-0" + str(i) + ".jpg")
             time.sleep(replay_delay)  # pause
 
-
 # define the photo taking function for when the big button is pressed
 def start_photobooth():
     input(pygame.event.get())  # press escape to exit pygame. Then press ctrl-c to exit python.
@@ -231,7 +230,7 @@ def start_photobooth():
     else:
         logging.debug("capture_continuous")
         camera.start_preview(
-            resolution=(config.monitor_w, config.monitor_h))  # start preview at low res but the right ratio
+            resolution=(high_res_w, high_res_h))  # start preview at low res but the right ratio
         time.sleep(2)  # warm up camera
 
         try:  # take the photos
@@ -255,12 +254,12 @@ def start_photobooth():
 
     # Create a montage of the images
     montage = "gm montage -mode concatenate -resize 1190x1770 -borderwidth 5 -bordercolor white " \
-              + config.file_path + now + "*.jpg  bottom-1190x190.jpg -tile 1x3 " \
-              + config.file_path + now + "-final.jpg "
+              + config.file_path + "/" + now + "*.jpg  bottom-1190x190.jpg -tile 1x3 " \
+              + config.file_path + "/final/" + now + "-final.jpg "
 
     processed = subprocess.call(montage, shell=True)
 
-    logging.info("gm montage for " + now + "-final.jpg = " + processed)
+    logging.info("gm montage for " + str(now) + "-final.jpg = " + str(processed))
 
     ########################### Begin Step 4 #################################
 
@@ -306,3 +305,4 @@ while True:
     # GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
     time.sleep(config.debounce)  # debounce
     start_photobooth()
+    logging.warning("----------------------")
