@@ -1,15 +1,15 @@
-# Copy this file to config.py and replace the values with your information
-# OAuth keys can be generated from https://api.tumblr.com/console/calls/user/info
-tumblr_consumer_key='Dlzu9uP2lWMafcgi7LD5Gv0t5zwxpWZNfuSZ1O3f4YeOxftjHC' #replace with your key
-tumblr_consumer_secret='GBEP4KsvxkMpNRcPabBcR7LO3yECeYQWCL4B0klrybL5alwKr8' #replace with your secret code
-tumblr_oath_token='2Dq87CWFE2ovyCsx5n8YKzU8zRsuoOv7EMNg9Pb1LItGN3bELS' #replace with you oath token
-tumblr_oath_secret='yFNIpArsAiQujAfa0QRuXulim41rcGnsk85d28OkzNvxMBbiXv' #replace with your oath secret code
-twitter_CONSUMER_KEY = 'X3dKSZdbAKWDWIVJNQPUN5c4I'
-twitter_CONSUMER_SECRET = 'LxrP2qIr6cNbTk889rSUZFGHrZN5ADSsvWGVid6RFrKPLwuTr6'
-twitter_ACCESS_KEY = '3166345045-dAAnanUZI5y5RCyewr1ABsPUcnkA6oDX5y1upce'
-twitter_ACCESS_SECRET = 'QjhrhSy0yyuC3xVQ8zJCjTYeqbiqKTHMTqQnE2oSaAemq'
+# Config settings to change behavior of photo booth
+monitor_w = 1920  # width of the display monitor
+monitor_h = 1080  # height of the display monitor
 file_path = '/home/pi/photobooth/pics/' # path to save images
-
-#Event specific Config
-tumblr_blog = 'piboothpics' # replace with your tumblr account name without .tumblr.com
-event_tag = 'piboothtest'
+clear_on_startup = False  # True will clear previously stored photos as the program launches. False will leave all previous photos.
+debounce = 0.3  # how long to debounce the button. Add more time if the button triggers too many times.
+post_online = True  # True to upload images. False to store locally only.
+capture_count_pics = True  # if true, show a photo count between taking photos. If false, do not. False is faster.
+make_gifs = True  # True to make an animated gif. False to post 4 jpgs into one post.
+hi_res_pics = True  # True to save high res pics from camera.
+# If also uploading, the program will also convert each image to a smaller image before making the gif.
+# False to first capture low res pics. False is faster.
+# Careful, each photo costs against your daily Tumblr upload max.
+camera_iso = 800  # adjust for lighting issues. Normal is 100 or 200. Sort of dark is 400. Dark is 800 max.
+# available options: 100, 200, 320, 400, 500, 640, 800
