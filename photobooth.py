@@ -21,8 +21,8 @@ import config  # this is the config python file config.py
 ########################
 ### Variables Config ###
 ########################
-led_pin = 7  # LED
-btn_pin = 18  # pin for the start button
+led_pin = 17  # LED
+btn_pin = 2  # pin for the start button
 
 total_pics = 2  # number of pics to be taken
 capture_delay = 1  # delay between pics
@@ -52,10 +52,10 @@ replay_cycles = 2  # how many times to show each photo on-screen after taking
 real_path = os.path.dirname(os.path.realpath(__file__))
 
 # GPIO setup
-# GPIO.setmode(GPIO.BOARD)
-# GPIO.setup(led_pin, GPIO.OUT)  # LED
-# GPIO.setup(btn_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-# GPIO.output(led_pin, False)  # for some reason the pin turns on at the beginning of the program. Why?
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(led_pin, GPIO.OUT)  # LED
+GPIO.setup(btn_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.output(led_pin, False)  # for some reason the pin turns on at the beginning of the program. Why?
 
 # initialize pygame
 pygame.init()
@@ -77,7 +77,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', filename='photobooth.log',
 def cleanup():
     logging.critical('Ended abruptly')
     pygame.quit()
-    # GPIO.cleanup()
+    GPIO.cleanup()
     atexit.register(cleanup)
 
 
@@ -97,9 +97,9 @@ def clear_pics(channel):
     # light the lights in series to show completed
     logging.warning("Deleted previous pics")
     for x in range(0, 3):  # blink light
-        # GPIO.output(led_pin, True)
+        GPIO.output(led_pin, True)
         sleep(0.25)
-        # GPIO.output(led_pin, False)
+        GPIO.output(led_pin, False)
         sleep(0.25)
 
 
@@ -154,7 +154,7 @@ def show_image(image_path):
     img = img.convert()
 
     # set pixel dimensions based on image
-    set_dimensions(img.get_width(), img.get_height())
+    # set_dimensions(img.get_width(), img.get_height())
 
     # rescale the image to fit the current display
     img = pygame.transform.scale(img, (transform_x, transfrom_y))
@@ -182,7 +182,7 @@ def start_photobooth():
     ################################# Begin Step 1 #################################
 
     logging.info("Get Ready")
-    # GPIO.output(led_pin, False)
+    GPIO.output(led_pin, False)
     show_image(real_path + "/instructions.png")
     sleep(prep_delay)
 
@@ -235,10 +235,10 @@ def start_photobooth():
 
         try:  # take the photos
             for i, filename in enumerate(camera.capture_continuous(config.file_path + now + '-' + '{counter:02d}.jpg')):
-                # GPIO.output(led_pin, True)  # turn on the LED
+                GPIO.output(led_pin, True)  # turn on the LED
                 logging.info("captured: " + filename)
                 time.sleep(capture_delay)  # pause in-between shots
-                # GPIO.output(led_pin, False)  # turn off the LED
+                GPIO.output(led_pin, False)  # turn off the LED
                 if i == total_pics - 1:
                     break
         finally:
@@ -278,7 +278,7 @@ def start_photobooth():
 
     time.sleep(restart_delay)
     show_image(real_path + "/intro.png");
-    # GPIO.output(led_pin, True)  # turn on the LED
+    GPIO.output(led_pin, True)  # turn on the LED
 
 
 ####################
@@ -292,17 +292,17 @@ if config.clear_on_startup:
 logging.warning("Starting photo booth...")
 
 for x in range(0, 5):  # blink light to show the app is running
-    # GPIO.output(led_pin, True)
+    GPIO.output(led_pin, True)
     sleep(0.25)
-    # GPIO.output(led_pin, False)
+    GPIO.output(led_pin, False)
     sleep(0.25)
 
 show_image(real_path + "/intro.png")
 
 while True:
-    # GPIO.output(led_pin, True)  # turn on the light showing users they can push the button
+    GPIO.output(led_pin, True)  # turn on the light showing users they can push the button
     input(pygame.event.get())  # press escape to exit pygame. Then press ctrl-c to exit python.
-    # GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
+    GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
     time.sleep(config.debounce)  # debounce
     start_photobooth()
     logging.warning("----------------------")

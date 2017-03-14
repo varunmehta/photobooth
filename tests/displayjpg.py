@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
+import sys
 import time
+import traceback
+from signal import alarm, signal, SIGALRM
+
 import pygame
-from signal import alarm, signal, SIGALRM, SIGKILL
 
 now = "20140516121953"
 total_pics = 4 # number of pics  to be taken
@@ -44,7 +47,7 @@ def display_pics(jpg_group):
 	
 try:
     display_pics(now)
-except Exception, e:
+except Exception as e:
     tb = sys.exc_info()[2]
     traceback.print_exception(e.__class__, e, tb)
 pygame.quit()
