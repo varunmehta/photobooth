@@ -301,7 +301,7 @@ if config.clear_on_startup:
     clear_pics(1)
 
     # check if files and folders exist for the event, or create them
-    config.file_path
+    init_event_folders()
 
 logging.warning("Starting photo booth...")
 
