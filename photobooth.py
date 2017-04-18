@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # created by chris@drumminhands.com
+# modified by varunmehta
 # see instructions at http://www.drumminhands.com/2014/06/15/raspberry-pi-photo-booth/
 
 import atexit
@@ -27,7 +28,7 @@ btn_pin = 2  # pin for the start button
 total_pics = 2  # number of pics to be taken
 capture_delay = 1  # delay between pics
 prep_delay = 5  # number of seconds at step 1 as users prep to have photo taken
-restart_delay = 10  # how long to display finished message before beginning a new session
+restart_delay = 7  # how long to display finished message before beginning a new session
 
 # full frame of v1 camera is 2592x1944. Wide screen max is 2592,1555
 # if you run into resource issues, try smaller, like 1920x1152.
@@ -52,7 +53,7 @@ replay_cycles = 2  # how many times to show each photo on-screen after taking
 real_path = os.path.dirname(os.path.realpath(__file__))
 
 # GPIO setup
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(led_pin, GPIO.OUT)  # LED
 GPIO.setup(btn_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.output(led_pin, False)  # for some reason the pin turns on at the beginning of the program. Why?
@@ -67,7 +68,6 @@ pygame.display.toggle_fullscreen()
 
 # init logging
 logging.basicConfig(format='%(asctime)s %(message)s', filename='photobooth.log', level=logging.INFO)
-
 
 #################
 ### Functions ###
@@ -101,6 +101,12 @@ def clear_pics(channel):
         sleep(0.25)
         GPIO.output(led_pin, False)
         sleep(0.25)
+
+
+def init_event_folders():
+    if (not os.path.exists(config.file_path)):
+        os.mkdir(config.file_path)
+
 
 
 # set variables to properly display the image on screen at right ratio
@@ -192,7 +198,7 @@ def start_photobooth():
     camera = picamera.PiCamera()
     camera.vflip = False
     camera.hflip = True  # flip for preview, showing users a mirror image
-    camera.rotation = 270  # revisit this depending upon final camera placement
+    camera.rotation = 0  # revisit this depending upon final camera placement
     # camera.saturation = -100  # comment out this line if you want color images
     # camera.iso = config.camera_iso
 
@@ -204,6 +210,7 @@ def start_photobooth():
 
     # All images will be number appended by now, 20160310113034-01.jpg
     now = time.strftime("%Y%m%d-%H%M%S")  # get the current date and time for the start of the filename
+    montage_img = now + "-montage.jpg"  # montage file name
 
     if config.capture_count_pics:
         logging.debug("Decided to go count pics")
@@ -255,7 +262,7 @@ def start_photobooth():
     # Create a montage of the images
     montage = "gm montage -mode concatenate -resize 1190x1770 -borderwidth 5 -bordercolor white " \
               + config.file_path + "/" + now + "*.jpg  bottom-1190x190.jpg -tile 1x3 " \
-              + config.file_path + "/final/" + now + "-final.jpg "
+              + config.file_path + "/final/" + montage_img
 
     processed = subprocess.call(montage, shell=True)
 
@@ -267,6 +274,9 @@ def start_photobooth():
 
     try:
         display_pics(now)
+        # show preview of finally created image
+        show_image(config.file_path + "/final/" + montage_img)
+        time.sleep(2)
     except Exception as e:
         tb = sys.exc_info()[2]
         traceback.print_exception(e.__class__, e, tb)
@@ -288,6 +298,9 @@ def start_photobooth():
 ## clear the previously stored pics based on config settings
 if config.clear_on_startup:
     clear_pics(1)
+
+    # check if files and folders exist for the event, or create them
+    config.file_path
 
 logging.warning("Starting photo booth...")
 
