@@ -13,6 +13,7 @@ import time
 import traceback
 from time import sleep
 
+import RPi.GPIO as GPIO
 import picamera  # http://picamera.readthedocs.org/en/release-1.4/install2.html
 import pygame
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
