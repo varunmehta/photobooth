@@ -106,7 +106,7 @@ def clear_pics(channel):
 def init_event_folders():
     if (not os.path.exists(config.file_path)):
         os.mkdir(config.file_path)
-
+        os.mkdir(config.file_path + "/" + config.event_name)
 
 
 # set variables to properly display the image on screen at right ratio
