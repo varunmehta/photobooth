@@ -162,7 +162,7 @@ def show_image(image_path):
     img = img.convert()
 
     # set pixel dimensions based on image
-    # set_dimensions(img.get_width(), img.get_height())
+    set_dimensions(img.get_width(), img.get_height())
 
     # rescale the image to fit the current display
     img = pygame.transform.scale(img, (transform_x, transfrom_y))
