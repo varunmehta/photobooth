@@ -107,7 +107,7 @@ def clear_pics(channel):
 def init_event_folders():
     if (not os.path.exists(config.file_path)):
         os.mkdir(config.file_path)
-        os.mkdir(config.file_path + "/" + config.event_name)
+        os.mkdir(config.file_path + "/final")
 
 
 # set variables to properly display the image on screen at right ratio
@@ -262,7 +262,7 @@ def start_photobooth():
 
     # Create a montage of the images
     montage = "gm montage -mode concatenate -resize 1190x1770 -borderwidth 5 -bordercolor white " \
-              + config.file_path + "/" + now + "*.jpg  bottom-1190x190.jpg -tile 1x3 " \
+              + config.file_path + "/" + now + "*.jpg  " + real_path + "/international_bottom.jpg -tile 1x3 " \
               + config.file_path + "/final/" + montage_img
 
     processed = subprocess.call(montage, shell=True)
@@ -300,8 +300,8 @@ def start_photobooth():
 if config.clear_on_startup:
     clear_pics(1)
 
-    # check if files and folders exist for the event, or create them
-    init_event_folders()
+# check if files and folders exist for the event, or create them
+init_event_folders()
 
 logging.warning("Starting photo booth...")
 
