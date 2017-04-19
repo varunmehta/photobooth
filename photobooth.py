@@ -108,6 +108,7 @@ def init_event_folders():
     if (not os.path.exists(config.file_path)):
         os.mkdir(config.file_path)
         os.mkdir(config.file_path + "/final")
+        logging.info("Initalized event folder")
 
 
 # set variables to properly display the image on screen at right ratio
