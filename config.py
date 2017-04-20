@@ -1,6 +1,6 @@
 # Config settings to change behavior of photo booth
 monitor_w = 800  # width of the display monitor
-monitor_h = 400  # height of the display monitor
+monitor_h = 480  # height of the display monitor
 event_name = 'international_night'
 file_path = '/home/pi/photobooth/' + event_name + "/"  # path to save images
 clear_on_startup = False  # True will clear previously stored photos as the program launches. False will leave all previous photos.
