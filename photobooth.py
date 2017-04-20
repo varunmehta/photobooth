@@ -160,6 +160,7 @@ def set_dimensions(img_w, img_h):
 
 # display one image on screen
 def show_image(image_path):
+    print(" Displaying... " + image_path)
     # clear the screen
     screen.fill((0, 0, 0))
 
