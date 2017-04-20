@@ -151,12 +151,12 @@ def set_dimensions(img_w, img_h):
     offset_y = math.floor(offset_y)
 
     # uncomment these lines to troubleshoot screen ratios
-    print(str(img_w) + " x " + str(img_h))
-    print("ratio_h: " + str(ratio_h))
-    print("transform_x: " + str(transform_x))
-    print("transform_y: " + str(transform_y))
-    print("offset_y: " + str(offset_y))
-    print("offset_x: " + str(offset_x))
+    # print(str(img_w) + " x " + str(img_h))
+    # print("ratio_h: " + str(ratio_h))
+    # print("transform_x: " + str(transform_x))
+    # print("transform_y: " + str(transform_y))
+    # print("offset_y: " + str(offset_y))
+    # print("offset_x: " + str(offset_x))
 
 # display one image on screen
 def show_image(image_path):
