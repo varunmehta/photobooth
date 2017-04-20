@@ -28,8 +28,8 @@ btn_pin = 2  # pin for the start button
 
 total_pics = 2  # number of pics to be taken
 capture_delay = 1  # delay between pics
-prep_delay = 5  # number of seconds at step 1 as users prep to have photo taken
-restart_delay = 7  # how long to display finished message before beginning a new session
+prep_delay = 3  # number of seconds at step 1 as users prep to have photo taken
+restart_delay = 5  # how long to display finished message before beginning a new session
 
 # full frame of v1 camera is 2592x1944. Wide screen max is 2592,1555
 # if you run into resource issues, try smaller, like 1920x1152.
@@ -46,7 +46,7 @@ transfrom_y = config.monitor_h  # how high to scale the jpg when replaying
 offset_x = 0  # how far off to left corner to display photos
 offset_y = 0  # how far off to left corner to display photos
 replay_delay = 1  # how much to wait in-between showing pics on-screen after taking
-replay_cycles = 2  # how many times to show each photo on-screen after taking
+replay_cycles = 1  # how many times to show each photo on-screen after taking
 
 ####################
 ### Other Config ###
@@ -69,6 +69,7 @@ pygame.display.toggle_fullscreen()
 
 # init logging
 logging.basicConfig(format='%(asctime)s %(message)s', filename='photobooth.log', level=logging.INFO)
+
 
 #################
 ### Functions ###
@@ -143,14 +144,13 @@ def set_dimensions(img_w, img_h):
         transform_y = config.monitor_h
         offset_y = offset_x = 0
 
-
-# uncomment these lines to troubleshoot screen ratios
-#     print str(img_w) + " x " + str(img_h)
-#     print "ratio_h: "+ str(ratio_h)
-#     print "transform_x: "+ str(transform_x)
-#     print "transform_y: "+ str(transform_y)
-#     print "offset_y: "+ str(offset_y)
-#     print "offset_x: "+ str(offset_x)
+    # uncomment these lines to troubleshoot screen ratios
+    print(str(img_w) + " x " + str(img_h))
+    print("ratio_h: " + str(ratio_h))
+    print("transform_x: " + str(transform_x))
+    print("transform_y: " + str(transform_y))
+    print("offset_y: " + str(offset_y))
+    print("offset_x: " + str(offset_x))
 
 # display one image on screen
 def show_image(image_path):
@@ -182,6 +182,7 @@ def display_pics(jpg_group):
         for i in range(1, total_pics + 1):  # show each pic
             show_image(config.file_path + jpg_group + "-0" + str(i) + ".jpg")
             time.sleep(replay_delay)  # pause
+
 
 # define the photo taking function for when the big button is pressed
 def start_photobooth():
@@ -218,6 +219,8 @@ def start_photobooth():
         logging.debug("Decided to go count pics")
         try:  # take the photos
             for i in range(1, total_pics + 1):
+                show_image(real_path + "/pose" + str(i) + ".png")
+                time.sleep(capture_delay)  # pause in-between shots
                 camera.hflip = True  # preview a mirror image
                 camera.start_preview(
                     resolution=(high_res_w, high_res_h))  # start preview at low res but the right ratio
@@ -229,7 +232,7 @@ def start_photobooth():
                 logging.info("captured: " + filename)
                 # GPIO.output(led_pin, False)  # turn off the LED
                 camera.stop_preview()
-                show_image(real_path + "/pose" + str(i) + ".png")
+                #                show_image(real_path + "/pose" + str(i) + ".png")
                 time.sleep(capture_delay)  # pause in-between shots
                 clear_screen()
                 if i == total_pics + 1:
