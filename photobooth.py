@@ -30,7 +30,7 @@ btn_pin = 2  # pin for the start button
 total_pics = 2  # number of pics to be taken
 capture_delay = 1  # delay between pics
 prep_delay = 3  # number of seconds at step 1 as users prep to have photo taken
-restart_delay = 5  # how long to display finished message before beginning a new session
+restart_delay = 3  # how long to display finished message before beginning a new session
 
 # full frame of v1 camera is 2592x1944. Wide screen max is 2592,1555
 # if you run into resource issues, try smaller, like 1920x1152.
@@ -126,41 +126,42 @@ def set_dimensions(img_w, img_h):
 
     if (ratio_h < config.monitor_h):
         # Use horizontal black bars
-        print("horizontal black bars")
+        # print("horizontal black bars")
         transform_y = ratio_h
         transform_x = config.monitor_w
         offset_y = (config.monitor_h - ratio_h) / 2
         offset_x = 0
     elif (ratio_h > config.monitor_h):
         # Use vertical black bars
-        print("vertical black bars")
+        # print("vertical black bars")
         transform_x = (config.monitor_h * img_w) / img_h
         transform_y = config.monitor_h
         offset_x = (config.monitor_w - transform_x) / 2
         offset_y = 0
     else:
         # No need for black bars as photo ratio equals screen ratio
-        print("no black bars")
+        # print("no black bars")
         transform_x = config.monitor_w
         transform_y = config.monitor_h
         offset_y = offset_x = 0
 
+    # Ceil and floor floats to integers
     transform_x = math.ceil(transform_x)
     transform_y = math.ceil(transform_y)
     offset_x = math.floor(offset_x)
     offset_y = math.floor(offset_y)
 
     # uncomment these lines to troubleshoot screen ratios
-    print(str(img_w) + " x " + str(img_h))
-    print("ratio_h: " + str(ratio_h))
-    print("transform_x: " + str(transform_x))
-    print("transform_y: " + str(transform_y))
-    print("offset_y: " + str(offset_y))
-    print("offset_x: " + str(offset_x))
+    # print(str(img_w) + " x " + str(img_h))
+    # print("ratio_h: " + str(ratio_h))
+    # print("transform_x: " + str(transform_x))
+    # print("transform_y: " + str(transform_y))
+    # print("offset_y: " + str(offset_y))
+    # print("offset_x: " + str(offset_x))
 
 # display one image on screen
 def show_image(image_path):
-    print(" Displaying... " + image_path)
+    # print(" Displaying... " + image_path)
     # clear the screen
     screen.fill((0, 0, 0))
 
