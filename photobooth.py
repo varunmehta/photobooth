@@ -227,6 +227,7 @@ def start_photobooth():
             for i in range(1, total_pics + 1):
                 show_image(real_path + "/pose" + str(i) + ".png")
                 time.sleep(capture_delay)  # pause in-between shots
+                clear_screen()
                 camera.hflip = True  # preview a mirror image
                 camera.start_preview(
                     resolution=(high_res_w, high_res_h))  # start preview at low res but the right ratio
@@ -238,7 +239,7 @@ def start_photobooth():
                 logging.info("captured: " + filename)
                 # GPIO.output(led_pin, False)  # turn off the LED
                 camera.stop_preview()
-                #                show_image(real_path + "/pose" + str(i) + ".png")
+                # show_image(real_path + "/pose" + str(i) + ".png")
                 time.sleep(capture_delay)  # pause in-between shots
                 clear_screen()
                 if i == total_pics + 1:
