@@ -126,21 +126,21 @@ def set_dimensions(img_w, img_h):
 
     if (ratio_h < config.monitor_h):
         # Use horizontal black bars
-        # print "horizontal black bars"
+        print("horizontal black bars")
         transform_y = ratio_h
         transform_x = config.monitor_w
         offset_y = (config.monitor_h - ratio_h) / 2
         offset_x = 0
     elif (ratio_h > config.monitor_h):
         # Use vertical black bars
-        # print "vertical black bars"
+        print("vertical black bars")
         transform_x = (config.monitor_h * img_w) / img_h
         transform_y = config.monitor_h
         offset_x = (config.monitor_w - transform_x) / 2
         offset_y = 0
     else:
         # No need for black bars as photo ratio equals screen ratio
-        # print "no black bars"
+        print("no black bars")
         transform_x = config.monitor_w
         transform_y = config.monitor_h
         offset_y = offset_x = 0
@@ -151,12 +151,12 @@ def set_dimensions(img_w, img_h):
     offset_y = math.floor(offset_y)
 
     # uncomment these lines to troubleshoot screen ratios
-    # print(str(img_w) + " x " + str(img_h))
-    # print("ratio_h: " + str(ratio_h))
-    # print("transform_x: " + str(transform_x))
-    # print("transform_y: " + str(transform_y))
-    # print("offset_y: " + str(offset_y))
-    # print("offset_x: " + str(offset_x))
+    print(str(img_w) + " x " + str(img_h))
+    print("ratio_h: " + str(ratio_h))
+    print("transform_x: " + str(transform_x))
+    print("transform_y: " + str(transform_y))
+    print("offset_y: " + str(offset_y))
+    print("offset_x: " + str(offset_x))
 
 # display one image on screen
 def show_image(image_path):
