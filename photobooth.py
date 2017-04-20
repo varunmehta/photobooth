@@ -6,6 +6,7 @@
 import atexit
 import glob
 import logging
+import math
 import os
 import subprocess
 import sys
@@ -143,6 +144,11 @@ def set_dimensions(img_w, img_h):
         transform_x = config.monitor_w
         transform_y = config.monitor_h
         offset_y = offset_x = 0
+
+    transform_x = math.ceil(transform_x)
+    transform_y = math.ceil(transform_y)
+    offset_x = math.floor(offset_x)
+    offset_y = math.floor(offset_y)
 
     # uncomment these lines to troubleshoot screen ratios
     print(str(img_w) + " x " + str(img_h))
