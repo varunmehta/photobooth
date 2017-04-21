@@ -221,7 +221,7 @@ def start_photobooth():
 
     # All images will be number appended by now, 20160310113034-01.jpg
     now = time.strftime("%Y%m%d-%H%M%S")  # get the current date and time for the start of the filename
-    montage_img = now + "-montage.jpg"  # montage file name
+    montage_img = now + "-" + config.event_name + ".jpg"  # montage file name
 
     if config.capture_count_pics:
         logging.debug("Decided to go count pics")
@@ -275,7 +275,7 @@ def start_photobooth():
 
     # Create a montage of the images
     montage = "gm montage -mode concatenate -resize 1190x1770 -borderwidth 5 -bordercolor white " \
-              + config.file_path + "/" + now + "*.jpg  " + real_path + "/international_bottom.jpg -tile 1x3 " \
+              + config.file_path + "/" + now + "-01.jpg  " + real_path + "/holi-middle.jpg -tile 1x3 " + config.file_path + "/" + now + "-02.jpg " + \
               + config.file_path + "/final/" + montage_img
 
     processed = subprocess.call(montage, shell=True)
