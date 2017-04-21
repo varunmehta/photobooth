@@ -304,8 +304,8 @@ def start_photobooth():
     show_image(real_path + "/finished2.png")
 
     # upload to dropbox
-    subprocess.call(
-        "/opt/Dropbox-Uploader/dropbox_uploader.sh -f /home/pi/.dropbox_uploader " + config.file_path + "final/" + montage_img + " " + montage_img)
+    # subprocess.call(
+    #     "/opt/Dropbox-Uploader/dropbox_uploader.sh -f /home/pi/.dropbox_uploader upload " + config.file_path + "final/" + montage_img + " " + montage_img)
 
     time.sleep(restart_delay)
     show_image(real_path + "/intro.png");
