@@ -274,7 +274,7 @@ def start_photobooth():
     show_image(real_path + "/processing.png")
 
     # Create a montage of the images
-    montage = "gm montage -mode concatenate -resize 1190x1770 -borderwidth 5 -bordercolor yellow " \
+    montage = "gm montage -mode concatenate -resize 1190x1770 -borderwidth 5 -bordercolor white " \
               + config.file_path + "/" + now + "-01.jpg  " + real_path + "/bollywood-middle.jpg " \
               + config.file_path + "/" + now + "-02.jpg -tile 1x3 " \
               + config.file_path + "/final/" + montage_img
